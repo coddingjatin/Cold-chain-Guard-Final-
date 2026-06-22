@@ -6,7 +6,7 @@ export function ChatPanel({ shipment, readings }: { shipment: Shipment; readings
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [msgs, setMsgs] = useState<{ role: "user" | "bot"; text: string }[]>([
-    { role: "bot", text: `Hi — I'm the compliance assistant for ${shipment.id}. Ask me about safety, breaches, or generate a regulatory summary.` },
+    { role: "bot", text: `Hi there! I'm your compliance assistant for ${shipment.id}. Here are quick things to ask:\n\n❓ "Is this shipment safe?"\n📋 "Give me a summary"\n🔒 "Explain the hash chain?"\n\nOr just type your question!` },
   ]);
 
   const send = () => {
@@ -27,15 +27,23 @@ export function ChatPanel({ shipment, readings }: { shipment: Shipment; readings
         💬
       </button>
       {open && (
-        <div className="fixed bottom-24 right-6 z-40 flex h-[520px] w-[380px] max-w-[calc(100vw-2rem)] flex-col rounded-xl border bg-card shadow-2xl">
-          <div className="bg-navy text-navy-foreground flex items-center justify-between rounded-t-xl px-4 py-3">
+        <div className="fixed bottom-24 right-6 z-[9999] flex h-[520px] w-[380px] max-w-[calc(100vw-2rem)] flex-col rounded-xl border bg-card shadow-2xl">
+          <div className="bg-primary text-primary-foreground flex items-center justify-between rounded-t-xl px-4 py-3">
             <div>
               <div className="text-sm font-semibold">Compliance Assistant</div>
               <div className="text-xs opacity-70">Context: {shipment.id} · {readings.length} readings</div>
             </div>
-            <button onClick={() => setOpen(false)} className="hover:bg-white/10 rounded p-1">✕</button>
+            <div className="flex gap-2">
+              <button 
+                onClick={() => setMsgs([{ role: "bot", text: `Hi there! I'm your compliance assistant for ${shipment.id}. Here are quick things to ask:\n\n❓ "Is this shipment safe?"\n📋 "Give me a summary"\n🔒 "Explain the hash chain?"\n\nOr just type your question!` }])} 
+                className="hover:bg-white/10 rounded px-2 py-1 text-xs"
+              >
+                Clear Chat
+              </button>
+              <button onClick={() => setOpen(false)} className="hover:bg-white/10 rounded p-1">✕</button>
+            </div>
           </div>
-          <div className="flex-1 space-y-3 overflow-y-auto p-3">
+          <div className="flex-1 min-h-0 space-y-3 overflow-y-auto p-3 bg-card/50">
             {msgs.map((m, i) => (
               <div
                 key={i}
